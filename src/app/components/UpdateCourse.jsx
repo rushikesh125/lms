@@ -1,16 +1,19 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { createCourse } from "@/firebase/courses/write";
+// import { createCourse } from "@/firebase/courses/write";
 import { useSelector } from "react-redux";
 import CustomBtn from "./CustomBtn";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { updateCourse } from "@/firebase/courses/write";
+import { getCourse } from "@/firebase/courses/read.server";
 
-const CreateCourse = () => {
+const UpdateCourse = () => {
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const [data, setData] = useState({
     courseTitle: "",
     shortDescription: "",
@@ -21,12 +24,31 @@ const CreateCourse = () => {
     description: "",
     posterURL: "",
   });
-  const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const course_id = searchParams.get("id");
+  console.log("id::", course_id);
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Course Details Fetching Logic
+  const fetchCourse = async () => {
+    try {
+      const course = await getCourse({ id: course_id });
+      if (course) {
+        setData({
+          ...course,
+          courseId:course_id
+        });
+      } else {
+        throw new Error("Course Does NOt Exits");
+      }
+    } catch (error) {
+      toast.error("Error Fetching Course::", error?.message);
+      console.log(error);
+    }
   };
 
   // Handle form submission
@@ -48,14 +70,14 @@ const CreateCourse = () => {
     setIsLoading(true);
     try {
       console.log("Form Data:", data);
-      const courseId = await createCourse({
+      const courseId = await updateCourse({
         data: data,
         instructureUid: user?.uid,
         instructureName: user?.displayName,
         instructurePhotoURL: user?.photoURL,
-        instructureEmail: user?.email,
+        instructureEmail:user?.email
       });
-      toast.success(`Course Created Successfully (ID: ${courseId})`);
+      toast.success(`Course Updated Successfully (ID: ${courseId})`);
       // Reset form after successful submission (optional)
       // setData({
       //   courseTitle: "",
@@ -67,7 +89,7 @@ const CreateCourse = () => {
       //   description: "",
       //   posterURL: "",
       // });
-      router.push('/my-courses')
+      router.push("/my-courses");
     } catch (error) {
       toast.error(error?.message || "Failed to create course");
       console.error("Submission error:", error);
@@ -107,18 +129,26 @@ const CreateCourse = () => {
   const courseLang = ["English", "Hindi"]; // Removed duplicate "English"
   const courseLevel = ["Beginner", "Intermediate", "Advanced"]; // Fixed typo "Intermidiate" to "Intermediate"
 
+  useEffect(()=>{
+    if(course_id){
+      fetchCourse();
+      console.log(data)
+    }
+  },[course_id])
+
   return (
     <div className="bg-white rounded-md mx-auto md:w-11/12 lg:w-10/12 w-full py-2 px-2 md:p-6 lg:px-10">
       <div className="w-full flex justify-between items-center">
-        <div className="text-xl text-purple-400">Create Course</div>
+        <div className="text-xl text-purple-400">Update Course</div>
         <Button
+          className="hidden md:block"
           color="secondary"
           variant="shadow"
           onPress={handleSubmit}
           isLoading={isLoading}
           disabled={isLoading} // Disable button while loading
         >
-          Create
+          Update
         </Button>
       </div>
       <hr className="my-4" />
@@ -285,9 +315,19 @@ const CreateCourse = () => {
             placeholder="Write your Course Description here..."
           />
         </div>
+        <Button
+          className="block md:hidden"
+          color="secondary"
+          variant="shadow"
+          onPress={handleSubmit}
+          isLoading={isLoading}
+          disabled={isLoading} // Disable button while loading
+        >
+          Update
+        </Button>
       </div>
     </div>
   );
 };
 
-export default CreateCourse;
+export default UpdateCourse;

@@ -1,5 +1,5 @@
 import { db } from "../config";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, updateDoc, Timestamp, deleteDoc } from "firebase/firestore";
 import { generateRandomId } from "../utils";
 
 export const createCourse = async ({
@@ -40,11 +40,25 @@ export const createCourse = async ({
 };
 
 
-// export const insertTest = async ({data})=>{
-//     const randId = generateRandomId(20);
-//     console.log(randId);
-    
-//     await setDoc(doc(db,`courses`,randId),{
-//         text:data
-//     })
-// }
+export const updateCourse = async ({
+  data,
+  instructureUid ,
+  instructureName ,
+  instructurePhotoURL ,
+  instructureEmail
+}) => {
+  if (!data?.courseId) {
+    throw new Error("ID is required");
+  }
+  
+
+  await updateDoc(doc(db, `courses/${data?.courseId}`), {
+    ...data,
+    instructureUid: instructureUid,
+    instructureName: instructureName,
+    instructurePhotoURL: instructurePhotoURL,
+    instructureEmail: instructureEmail,
+    createdAt: Timestamp.now(),
+  });
+};
+
