@@ -8,6 +8,7 @@ import React from "react";
 const CoursePage = () => {
   const { course_id } = useParams();
   const { data: course, error, isLoading } = useCourse({ id: course_id });
+  console.log('data',course);
   if (isLoading) {
     return <Loading />;
   }

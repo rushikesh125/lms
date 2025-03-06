@@ -1,56 +1,52 @@
-import React, { useState } from 'react';
-import MDEditor from '@uiw/react-md-editor';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Card, CardHeader } from '@heroui/react';
-import { CardTitle } from './ui/Cards';
+"use client"
+import React from "react";
+import MDEditor from "@uiw/react-md-editor";
+import rehypeSanitize from "rehype-sanitize";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/atom-one-dark.css";
+import { Card, CardHeader, CardContent, CardTitle } from "./ui/Cards";
 
-
-const MdEditor = () => {
-  const [value, setValue] = useState('# Hello World\n\nStart typing your markdown here...\n\n```javascript\nfunction example() {\n  console.log("Syntax Highlighting");\n}\n```');
-
-  // Custom renderer for code blocks with syntax highlighting
-  const CodeRenderer = {
-    code({ node, inline, className, children, ...props }) {
-      const match = /language-(\w+)/.exec(className || '');
-      
-      return !inline && match ? (
-        <SyntaxHighlighter
-          style={oneDark}
-          language={match[1]}
-          PreTag="div"
-          {...props}
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
-      ) : (
-        <code className={className} {...props}>
-          {children}
-        </code>
-      );
-    }
-  };
-
+const MdEditor = ({ chapterContent, setChapterContent }) => {
   return (
-    <Card className="w-full max-w-4xl">
+    <Card className="w-full max-h-screen">
       <CardHeader>
         <CardTitle>Markdown Editor</CardTitle>
       </CardHeader>
       <CardContent>
-        <div data-color-mode="light" className="w-full">
+        <div data-color-mode="light" className="w-full md:flex">
           <MDEditor
-            value={value}
-            onChange={(val) => setValue(val || '')}
+            value={chapterContent}
+            onChange={(val) => setChapterContent(val || "")}
             height={400}
-            className="mb-4"
+            className="mb-4 md:w-1/2"
+            preview="edit"
+            previewOptions={{
+              rehypePlugins: [
+                [rehypeSanitize],
+                [rehypeHighlight, { detect: true, ignoreMissing: true }],
+              ],
+            }}
           />
-          <div className="border p-4 rounded">
+          <div className="border rounded md:w-1/2 overflow-y-scroll">
             <h3 className="text-lg font-semibold mb-2">Preview:</h3>
-            <MDEditor.Markdown 
-              source={value} 
-              components={CodeRenderer}
-              style={{ whiteSpace: 'pre-wrap' }}
-            />
+            <div
+              className="markdown-preview-container"
+              style={{
+                maxHeight: "400px",
+                overflowY: "auto",
+                border: "1px solid #e5e7eb",
+                borderRadius: "4px",
+                padding: "10px",
+              }}
+            >
+              <MDEditor.Markdown
+                source={chapterContent || ""}
+                rehypePlugins={[
+                  [rehypeSanitize],
+                  [rehypeHighlight, { detect: true, ignoreMissing: true }],
+                ]}
+              />
+            </div>
           </div>
         </div>
       </CardContent>

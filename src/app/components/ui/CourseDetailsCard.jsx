@@ -9,9 +9,13 @@ import {
   Globe,
   Blocks,
   Plus,
+  Heart,
+  GitFork,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import CourseReviews from "./Review";
+import { Button } from "@heroui/react";
 
 const CourseDetailsCard = ({ courseData }) => {
   const { course_id } = useParams();
@@ -117,12 +121,24 @@ const CourseDetailsCard = ({ courseData }) => {
       </div>
       <div className="flex-1 w-auto p-2 md:p-8 bg-white shadow-lg rounded-2xl overflow-hidden">
         <div className="flex justify-between">
-          <h2 className="text-purple-400 font-semibold text-xl ">Chapters</h2>
-          <Link href={`/my-courses/${course_id}/create-chapter`} className="flex gap-1 text-white bg-purple-500 px-3 py-1 rounded-lg group hover:scale-[92%] transition-all ease-in">
-            <Plus className="group-hover:-translate-x-1 transition-all ease-in"/>
-            Create
-          </Link>
+          <div className="flex items-center gap-2">
+            <Button variant="shadow"  isIconOnly className="bg-pink-500 text-white">
+              
+              <Heart />
+            </Button>
+            <span> 3k Likes</span>
+          </div>
+          <Button
+            color="secondary"
+            variant="ghost"
+            endContent={<GitFork />}
+            className="flex items-center "
+          >
+            180 Forks
+          </Button>
         </div>
+
+        <CourseReviews />
       </div>
     </div>
   );
