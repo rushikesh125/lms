@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../config";
 
 export const getCourse = async ({ id }) => {
@@ -10,3 +10,13 @@ export const getCourse = async ({ id }) => {
       return null;
     }
   };
+
+export const getAllCourses = async () =>{
+  try {
+    const snapshots = await getDocs(query(collection(db,'courses'),orderBy("createdAt","desc")))
+    return snapshots.docs.length > 0 ? snapshots.docs.map(item => item.data()) : null;
+  } catch (error) {
+    console.log(error)
+    return null;
+  }
+}

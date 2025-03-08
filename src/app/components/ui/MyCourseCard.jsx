@@ -8,57 +8,60 @@ import toast from "react-hot-toast";
 const MyCourseCard = ({ courseData }) => {
   const { courseTitle, posterURL, courseId } = courseData;
   const [isLoading, setIsLoading] = useState(false);
+
   const handleDeleteCourse = async () => {
-    if (confirm("are you sure ? you want to delete course ?")) {
+    if (confirm("Are you sure you want to delete this course?")) {
       setIsLoading(true);
       try {
         await deleteCourse({ id: courseId });
-        toast.success("Deleted Successfully");
+        toast.success("Course deleted successfully!");
       } catch (error) {
-        toast.error("Error Deleting Course");
+        toast.error("Error deleting course.");
       } finally {
         setIsLoading(false);
       }
-    } else {
-      return;
     }
   };
+
   return (
-    <div className="border border-slate-500/[0.20]  rounded-lg shadow-sm hover:shadow">
-      <div>
+    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transform transition duration-300 ease-in-out">
+      <Link href={`/my-courses/${courseId}`}> 
         <img
           src={posterURL}
-          alt="course-banner"
-          className="h-48 md:h-40 rounded-t-lg object-cover w-full"
+          alt={courseTitle}
+          className="h-48 w-full object-cover hover:opacity-80"
         />
-      </div>
-      <div className="px-2 py-1">
-        <h2 className="font-semibold">{courseTitle}</h2>
-        <h3 className="text-xs text-gray-500">5 Students Enrolled</h3>
-        <div className="flex gap-1 items-center justify-end">
-          <Link
-            href={`/my-courses/${courseId}`}
-            className="px-3 py-1 rounded-lg text-purple-600 hover:bg-purple-200 flex items-center gap-1"
-          >
-            <Eye size={13} />
-            View
+      </Link>
+      <div className="p-4">
+        <Link href={`/my-courses/${courseId}`}>
+          <h2 className="font-semibold text-gray-800 hover:text-purple-600 transition duration-200">
+            {courseTitle}
+          </h2>
+        </Link>
+        <p className="text-sm text-gray-600 mt-2">5 Students Enrolled</p>
+        <div className="flex items-center justify-end mt-4 space-x-2">
+          <Link href={`/my-courses/${courseId}`}>
+            <Button variant="ghost" size="sm">
+              <Eye className="w-4 h-4 mr-1" />
+              View
+            </Button>
           </Link>
           <Link href={`/my-courses/update-course?id=${courseId}`}>
-            <Button
-              isIconOnly
-              className="bg-transparent hover:bg-purple-200 text-purple-500"
-            >
-              <Edit2 size={13} />
+            <Button variant="ghost" size="sm" className="text-purple-600 hover:bg-purple-100">
+              <Edit2 className="w-4 h-4 mr-1" />
+              Edit
             </Button>
           </Link>
           <Button
-          isDisabled={isLoading}
-          isLoading={isLoading}
-          onPress={handleDeleteCourse}
-            isIconOnly
-            className="bg-transparent hover:bg-red-100 text-red-500"
+            isDisabled={isLoading}
+            isLoading={isLoading}
+            onPress={handleDeleteCourse}
+            variant="ghost"
+            size="sm"
+            className="text-red-500 hover:bg-red-100"
           >
-            <Trash2 size={13} />
+            <Trash2 className="w-4 h-4 mr-1" />
+            Delete
           </Button>
         </div>
       </div>
@@ -67,3 +70,4 @@ const MyCourseCard = ({ courseData }) => {
 };
 
 export default MyCourseCard;
+

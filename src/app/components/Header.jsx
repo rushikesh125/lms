@@ -70,7 +70,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full border-b border-slate-700/[0.1] ">
+    <header className="sticky top-0 bg-white z-50 w-full border-b border-slate-700/[0.1] ">
       <Navbar onMenuOpenChange={setIsMenuOpen}>
         <NavbarContent>
           <NavbarMenuToggle
@@ -90,7 +90,7 @@ const Header = () => {
             <Link
               color="foreground"
               className="flex items-center justify-center gap-2 hover:text-purple-500"
-              href="./my-subscriptions"
+              href="/my-subscriptions"
             >
               <TvMinimalPlay />
               Subscription
@@ -99,7 +99,7 @@ const Header = () => {
           <NavbarItem>
             <Link
               aria-current="page"
-              href="./my-courses"
+              href="/my-courses"
               className="flex items-center justify-center gap-2 hover:text-purple-500"
             >
               <Clapperboard />

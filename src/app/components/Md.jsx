@@ -9,10 +9,10 @@ import { Card, CardHeader, CardContent, CardTitle } from "./ui/Cards";
 const MdEditor = ({ chapterContent, setChapterContent }) => {
   return (
     <Card className="w-full max-h-screen">
-      <CardHeader>
+      {/* <CardHeader>
         <CardTitle>Markdown Editor</CardTitle>
-      </CardHeader>
-      <CardContent>
+      </CardHeader> */}
+      <div>
         <div data-color-mode="light" className="w-full md:flex">
           <MDEditor
             value={chapterContent}
@@ -27,7 +27,7 @@ const MdEditor = ({ chapterContent, setChapterContent }) => {
               ],
             }}
           />
-          <div className="border rounded md:w-1/2 overflow-y-scroll">
+          <div className="border rounded md:w-1/2 ">
             <h3 className="text-lg font-semibold mb-2">Preview:</h3>
             <div
               className="markdown-preview-container"
@@ -49,7 +49,7 @@ const MdEditor = ({ chapterContent, setChapterContent }) => {
             </div>
           </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };

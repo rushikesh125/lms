@@ -30,13 +30,11 @@ const CreateCourse = () => {
   });
   const router = useRouter();
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     if (
       !data?.courseTitle ||
@@ -48,23 +46,21 @@ const CreateCourse = () => {
       !data?.description ||
       !data?.posterURL
     ) {
-      toast.error("Please Fill Form Completely , there are missing Feilds");
+      toast.error("Please Fill Form Completely, there are missing Fields");
       return;
     }
 
     setIsLoading(true);
     try {
-      console.log("Form Data:", data);
       const courseId = await createCourse({
         data: data,
-        courseChapters:courseChapters,
+        courseChapters: courseChapters,
         instructureUid: user?.uid,
         instructureName: user?.displayName,
         instructurePhotoURL: user?.photoURL,
         instructureEmail: user?.email,
       });
       toast.success(`Course Created Successfully (ID: ${courseId})`);
-
       router.push("/my-courses");
     } catch (error) {
       toast.error(error?.message || "Failed to create course");
@@ -102,22 +98,14 @@ const CreateCourse = () => {
     "Project Management",
   ];
 
-  const courseLang = [
-    "English",
-    "Spanish",
-    "French",
-    "German",
-    "Hindi",
-    "Other",
-  ]; // Removed duplicate "English"
-  const courseLevel = ["Beginner", "Intermediate", "Advanced"]; // Fixed typo "Intermidiate" to "Intermediate"
+  const courseLang = ["English", "Spanish", "French", "German", "Hindi", "Other"];
+  const courseLevel = ["Beginner", "Intermediate", "Advanced"];
 
   const handleGenerateWithAi = async () => {
     setIsLoading(true);
     try {
       const response = await generateCourse(data, aiPrompt);
       const resData = JSON.parse(await response);
-      console.log(resData);
       if (resData.course_analysis) {
         const {
           courseTitle,
@@ -130,23 +118,21 @@ const CreateCourse = () => {
           chapters,
         } = resData.course_analysis;
 
-        setData((prevData) => {
-          return {
-            ...prevData,
-            courseTitle: courseTitle,
-            shortDescription: shortDescription,
-            category: category,
-            level: level,
-            language: language,
-            coursePrice: coursePrice,
-            description: description,
-          };
-        });
+        setData((prevData) => ({
+          ...prevData,
+          courseTitle,
+          shortDescription,
+          category,
+          level,
+          language,
+          coursePrice,
+          description,
+        }));
         setCourseChapters(chapters);
-        toast.success("Course Generated ");
+        toast.success("Course Generated");
       }
     } catch (error) {
-      toast.error("Error Generating course with Ai");
+      toast.error("Error Generating course with AI");
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -154,95 +140,99 @@ const CreateCourse = () => {
   };
 
   return (
-    <>
-      <div className="bg-white rounded-md mx-auto md:w-11/12 lg:w-10/12 w-full my-2  py-2 px-2 md:p-6 lg:px-10">
-        <div className="w-full flex justify-between items-center">
-          <div className="text-xl text-purple-400">Create Course</div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-gray-100 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl p-6 md:p-8 transform transition-all hover:shadow-3xl">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-purple-500 bg-clip-text">
+            Craft Your Course
+          </h1>
           <Button
             color="secondary"
             variant="shadow"
             onPress={handleSubmit}
             isLoading={isLoading}
-            disabled={isLoading} // Disable button while loading
+            disabled={isLoading}
+            className="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105"
           >
             Create
           </Button>
         </div>
-        <hr className="my-4" />
 
-        <div className="flex flex-col gap-4">
+        <hr className="mb-8 border-purple-200" />
+
+        {/* Form */}
+        <div className="space-y-8">
+          {/* Course Title */}
           <div>
-            <label className="text-sm block mb-1" htmlFor="courseTitle">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Course Title
             </label>
             <input
               required
               type="text"
               name="courseTitle"
-              id="courseTitle"
-              placeholder="Course Title"
               value={data.courseTitle}
               onChange={handleInputChange}
-              className="p-2 outline-none border border-purple-300 rounded-md w-full"
+              placeholder="Enter Course Title"
+              className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
             />
           </div>
 
-          {data?.posterURL && (
-            <div>
-              <img
-                src={data?.posterURL}
-                alt="Poster"
-                className="w-40"
-                onError={() => toast.error("Invalid poster URL")}
-              />
-            </div>
-          )}
+          {/* Poster Image */}
           <div>
-            <label className="text-sm block mb-1" htmlFor="posterURL">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Poster Image URL
             </label>
             <input
               required
               type="text"
               name="posterURL"
-              id="posterURL"
+              value={data.posterURL}
               onChange={handleInputChange}
-              value={data?.posterURL}
-              placeholder="Poster image URL"
-              className="p-2 outline-none border border-purple-300 rounded-md w-full"
+              placeholder="Paste Poster Image URL"
+              className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
             />
+            {data?.posterURL && (
+              <img
+                src={data.posterURL}
+                alt="Poster Preview"
+                className="mt-4 w-56 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105"
+                onError={() => toast.error("Invalid poster URL")}
+              />
+            )}
           </div>
 
+          {/* Short Description */}
           <div>
-            <label className="text-sm block mb-1" htmlFor="shortDescription">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Short Description
             </label>
             <input
               required
               type="text"
-              id="shortDescription"
               name="shortDescription"
-              placeholder="Enter Short Description"
               value={data.shortDescription}
               onChange={handleInputChange}
-              className="p-2 outline-none border border-purple-300 rounded-md w-full"
+              placeholder="Enter Short Description"
+              className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
             />
           </div>
 
-          <div className="md:flex gap-4 justify-evenly">
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="text-sm" htmlFor="selectCategory">
-                Select Category
+          {/* Category, Level, Language */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">
+                Category
               </label>
               <select
                 required
                 name="category"
-                id="selectCategory"
                 value={data.category}
                 onChange={handleInputChange}
-                className="border border-purple-300 rounded-md w-full p-2"
+                className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
               >
-                <option value={""}>Select Course Category</option>
+                <option value="">Select Category</option>
                 {categoriesList.map((cat, ind) => (
                   <option value={cat} key={ind}>
                     {cat}
@@ -250,19 +240,18 @@ const CreateCourse = () => {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="text-sm" htmlFor="selectLevel">
-                Select Level
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">
+                Level
               </label>
               <select
                 required
                 name="level"
-                id="selectLevel"
                 value={data.level}
                 onChange={handleInputChange}
-                className="border border-purple-300 rounded-md w-full p-2"
+                className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
               >
-                <option value="">Select Course Level</option>
+                <option value="">Select Level</option>
                 {courseLevel.map((level, ind) => (
                   <option value={level} key={ind}>
                     {level}
@@ -270,19 +259,18 @@ const CreateCourse = () => {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col gap-1 flex-1">
-              <label className="text-sm" htmlFor="selectLang">
-                Select Language
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">
+                Language
               </label>
               <select
                 required
                 name="language"
-                id="selectLang"
                 value={data.language}
                 onChange={handleInputChange}
-                className="border border-purple-300 rounded-md w-full p-2"
+                className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
               >
-                <option value="">Select Course Language</option>
+                <option value="">Select Language</option>
                 {courseLang.map((lang, ind) => (
                   <option value={lang} key={ind}>
                     {lang}
@@ -292,94 +280,90 @@ const CreateCourse = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label className="text-sm block mb-1" htmlFor="coursePrice">
+          {/* Course Price */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Course Price
             </label>
             <input
               required
-              value={data?.coursePrice}
+              type="number"
+              name="coursePrice"
+              value={data.coursePrice}
               onChange={(e) => {
                 const value = e.target.value;
                 if (value === "" || (Number(value) >= 0 && !isNaN(value))) {
                   handleInputChange(e);
                 }
               }}
-              type="number"
-              id="coursePrice"
-              name="coursePrice"
-              placeholder="Enter price"
-              className="p-2 border border-purple-300 rounded-md w-full outline-none"
+              placeholder="Enter Price"
+              className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
               min="0"
             />
           </div>
 
+          {/* Description */}
           <div>
-            <label
-              htmlFor="description"
-              className="block mb-1 text-sm font-medium text-gray-900"
-            >
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Course Description
             </label>
             <textarea
               required
-              id="description"
-              rows="6"
               name="description"
-              value={data?.description}
+              value={data.description}
               onChange={handleInputChange}
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-purple-300 outline-none"
-              placeholder="Write your Course Description here..."
+              rows="6"
+              placeholder="Write your course description here..."
+              className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
             />
           </div>
+
+          {/* AI Prompt */}
           <div>
-            <label
-              htmlFor="description"
-              className="block mb-1 text-sm font-medium text-purple-500"
-            >
-              🔮 Generate With Ai
+            <label className="block text-sm font-semibold text-purple-500 mb-2">
+              🔮 Generate with AI
             </label>
             <textarea
-              id="aiPrompt"
-              rows="2"
               name="aiPrompt"
               value={aiPrompt}
               onChange={(e) => setAiPrompt(e.target.value)}
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-purple-300 outline-none"
-              placeholder="Write short description of  Course you want to generate "
+              rows="3"
+              placeholder="Describe the course you want to generate..."
+              className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
             />
             <Button
-              startContent={<BrainCircuit />}
+              startContent={<BrainCircuit className="w-5 h-5" />}
               color="secondary"
               isLoading={isLoading}
               isDisabled={isLoading}
               variant="ghost"
-              className="my-1"
               onPress={handleGenerateWithAi}
+              className="mt-3 bg-purple-100 text-purple-500 hover:bg-purple-200 font-semibold py-2 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105"
             >
-              Generate With Ai ✨
+              Generate with AI ✨
             </Button>
           </div>
         </div>
       </div>
-      <div className=" rounded-md mx-auto md:w-11/12 lg:w-10/12 w-full  my-2 p-2">
-        {/* <EditChapters courseChapters={courseChapters}/> */}
+
+      {/* Chapters Section */}
+      <div className="max-w-4xl mx-auto bg-transparent mt-8">
         {courseChapters.map((chapter, ind) => (
           <EditChapters
-          key={ind}
-          chapter={chapter}
-          ind={ind}
+            key={ind}
+            chapter={chapter}
+            ind={ind}
             courseData={data}
             courseChapters={courseChapters}
             setCourseChapters={setCourseChapters}
           />
         ))}
+        <AddChapter
+          courseChapters={courseChapters}
+          setCourseChapters={setCourseChapters}
+        />
       </div>
-      <AddChapter
-        courseChapters={courseChapters}
-        setCourseChapters={setCourseChapters}
-      />
-    </>
+    </div>
   );
 };
 
