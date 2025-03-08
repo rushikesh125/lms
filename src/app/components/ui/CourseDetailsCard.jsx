@@ -11,6 +11,7 @@ import {
   Plus,
   Heart,
   GitFork,
+  SquareChartGantt,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -122,8 +123,11 @@ const CourseDetailsCard = ({ courseData }) => {
       <div className="flex-1 w-auto p-2 md:p-8 bg-white shadow-lg rounded-2xl overflow-hidden">
         <div className="flex justify-between">
           <div className="flex items-center gap-2">
-            <Button variant="shadow"  isIconOnly className="bg-pink-500 text-white">
-              
+            <Button
+              variant="shadow"
+              isIconOnly
+              className="bg-pink-500 text-white"
+            >
               <Heart />
             </Button>
             <span> 3k Likes</span>
@@ -137,8 +141,21 @@ const CourseDetailsCard = ({ courseData }) => {
             180 Forks
           </Button>
         </div>
-
-        <CourseReviews />
+        <hr className="my-4" />
+        {/* <CourseReviews /> */}
+        <div>
+          {courseData?.courseChapters?.length && (
+            <div className="text-purple-500 text-lg font-semibold">
+              Chapters
+            </div>
+          )}
+          {courseData?.courseChapters?.length &&
+            courseData?.courseChapters.map((chapter, ind) => (
+              <div className="p-2 border border-slate-600/[0.20] rounded-md my-1 bg-slate-50 flex items-center gap-2 line-clamp-1" key={ind}>
+               <SquareChartGantt size={13} className="text-purple-400"/> {chapter.title}
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

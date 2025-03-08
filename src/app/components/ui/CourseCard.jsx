@@ -1,5 +1,4 @@
-"use client";
-import { Button } from "@heroui/react";
+
 import Link from "next/link";
 
 const CourseCard = ({
@@ -15,7 +14,7 @@ const CourseCard = ({
 
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transform transition duration-300 ease-in-out">
-      <Link href={`/my-courses/${courseId}`}>
+      <Link href={`/course/${courseId}`}>
         <img
           src={posterURL}
           alt={courseTitle}
@@ -23,7 +22,7 @@ const CourseCard = ({
         />
       </Link>
       <div className="p-4">
-        <Link href={`/my-courses/${courseId}`}>
+        <Link href={`/course/${courseId}`}>
           <h2 className="font-semibold text-gray-800 hover:text-purple-600 transition duration-200 line-clamp-2">
             {courseTitle}
           </h2>
@@ -36,9 +35,9 @@ const CourseCard = ({
           <div className="font-semibold">&#36;{coursePrice}</div>
           <div className="text-gray-700 text-xs">{category}</div>
         </div>
-        <Button className="w-full mt-1" color="secondary">
+        <button className="w-full mt-1 px-2 py-1 rounded-md bg-purple-600 text-white" >
           Enroll Now
-        </Button>
+        </button>
       </div>
     </div>
   );

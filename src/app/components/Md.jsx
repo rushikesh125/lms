@@ -42,7 +42,7 @@ const MdEditor = ({ chapterContent, setChapterContent }) => {
               <MDEditor.Markdown
                 source={chapterContent || ""}
                 rehypePlugins={[
-                  [rehypeSanitize],
+                  [rehypeSanitize,{ tagNames: ["iframe"] }],
                   [rehypeHighlight, { detect: true, ignoreMissing: true }],
                 ]}
               />

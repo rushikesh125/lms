@@ -1,4 +1,7 @@
 "use client";
+
+
+
 import CourseDetailsCard from "@/app/components/ui/CourseDetailsCard";
 import Loading from "@/app/loading";
 import { useCourse } from "@/firebase/courses/read";
