@@ -18,7 +18,7 @@ const CoursesGridView = async () => {
         <h1 className="text-center text-2xl font-semibold text-purple-500">
           Explore All Courses
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6">
+        <div className="p-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6">
           {formattedCourses.length > 0 ? (
             formattedCourses.map((course) => (
               <CourseCard {...course} key={course.courseId} />

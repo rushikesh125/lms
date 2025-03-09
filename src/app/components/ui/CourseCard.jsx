@@ -25,7 +25,7 @@ const CourseCard = ({
       </Link>
       <div className="p-4">
         <Link href={`/course/${courseId}`}>
-          <h2 className="font-semibold text-gray-800 hover:text-purple-600 transition duration-200 line-clamp-2">
+          <h2 className="font-semibold text-gray-800 hover:text-purple-600 transition duration-200 line-clamp-1">
             {courseTitle}
           </h2>
         </Link>

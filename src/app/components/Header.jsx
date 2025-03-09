@@ -23,7 +23,7 @@ import { removeUser, setUser } from "@/store/userSlice";
 import toast from "react-hot-toast";
 import UserDropdown from "./ui/UserDropdown";
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -44,18 +44,7 @@ const Header = () => {
     return () => unsub();
   }, []);
 
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
+  
   const handleSigninWithGoogle = async () => {
     setIsLoading(true);
     try {
@@ -70,13 +59,10 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 bg-white z-50 w-full border-b border-slate-700/[0.1] ">
-      <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <header className="sticky top-0 bg-white z-30 w-full border-b border-slate-700/[0.1] ">
+      <Navbar >
         <NavbarContent>
-          <NavbarMenuToggle
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="sm:hidden"
-          />
+         
           <NavbarBrand>
             <Link href="/">
               <img src="/horizon-logo.png" alt="logo" className="h-10" />
@@ -90,7 +76,7 @@ const Header = () => {
             <Link
               color="foreground"
               className="flex items-center justify-center gap-2 hover:text-purple-500"
-              href="/my-subscriptions"
+              href="/enrolled-courses"
             >
               <TvMinimalPlay />
               Enrolled Courses
@@ -124,26 +110,7 @@ const Header = () => {
             </Button>
           )}
         </NavbarItem>
-        <NavbarMenu>
-          {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                className="w-full"
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-                }
-                href="#"
-                size="lg"
-              >
-                {item}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </NavbarMenu>
+        
       </Navbar>
     </header>
   );
