@@ -1,5 +1,6 @@
 
 import Link from "next/link";
+import CourseButton from "./CourseButton";
 
 const CourseCard = ({
   courseTitle,
@@ -9,6 +10,7 @@ const CourseCard = ({
   category,
   instructureName,
   instructurePhotoURL,
+  instructureUid 
 }) => {
   //   const = courseData;
 
@@ -35,9 +37,7 @@ const CourseCard = ({
           <div className="font-semibold">&#36;{coursePrice}</div>
           <div className="text-gray-700 text-xs">{category}</div>
         </div>
-        <button className="w-full mt-1 px-2 py-1 rounded-md bg-purple-600 text-white" >
-          Enroll Now
-        </button>
+        <CourseButton instructureUid={instructureUid} courseId={courseId} />
       </div>
     </div>
   );

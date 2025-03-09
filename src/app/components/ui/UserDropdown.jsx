@@ -40,7 +40,7 @@ export default function UserDropdown({ user }) {
           <DropdownItem key="Subscription">
             <div className="flex  items-center gap-2 hover:text-purple-500">
               <TvMinimalPlay size={15}/>
-              Subscription
+              Enrolled Courses
             </div>
           </DropdownItem>
           <DropdownItem key="Courses">

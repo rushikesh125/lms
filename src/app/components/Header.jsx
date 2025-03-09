@@ -93,7 +93,7 @@ const Header = () => {
               href="/my-subscriptions"
             >
               <TvMinimalPlay />
-              Subscription
+              Enrolled Courses
             </Link>
           </NavbarItem>
           <NavbarItem>

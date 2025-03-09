@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import CourseReviews from "./Review";
 import { Button } from "@heroui/react";
+import CourseButton from "./CourseButton";
 
 const CourseDetailsCard = ({ courseData }) => {
   const { course_id } = useParams();
@@ -115,9 +116,7 @@ const CourseDetailsCard = ({ courseData }) => {
 
         {/* Call to Action */}
         <div className="mt-8 text-center">
-          <button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
-            Enroll Now
-          </button>
+        <CourseButton instructureUid={courseData.instructureUid} courseId={courseData.courseId}/>
         </div>
       </div>
       <div className="flex-1 w-auto p-2 md:p-8 bg-white shadow-lg rounded-2xl overflow-hidden">
