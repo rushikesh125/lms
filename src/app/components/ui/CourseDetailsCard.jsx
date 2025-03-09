@@ -16,7 +16,7 @@ import {
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import CourseReviews from "./Review";
-import { Button } from "@heroui/react";
+import { Avatar, Button } from "@heroui/react";
 import CourseButton from "./CourseButton";
 
 const CourseDetailsCard = ({ courseData }) => {
@@ -98,11 +98,12 @@ const CourseDetailsCard = ({ courseData }) => {
           {/* Right Column - Instructor */}
           <div className="bg-purple-50 p-6 rounded-xl text-center">
             <div className="flex flex-col items-center">
-              <img
+              <Avatar showFallback  src={courseData.instructurePhotoURL} className="w-24 h-24 border-4 border-purple-400 mb-4 object-cover"/>
+              {/* <img
                 src={courseData.instructurePhotoURL}
                 alt={courseData.instructureName}
                 className="w-24 h-24 rounded-full border-4 border-purple-400 mb-4 object-cover"
-              />
+              /> */}
               <h3 className="text-lg font-semibold text-purple-800 mb-2">
                 {courseData.instructureName}
               </h3>
@@ -116,7 +117,7 @@ const CourseDetailsCard = ({ courseData }) => {
 
         {/* Call to Action */}
         <div className="mt-8 text-center">
-        <CourseButton instructureUid={courseData.instructureUid} courseId={courseData.courseId}/>
+        <CourseButton instructureUid={courseData.instructureUid} courseId={courseData.courseId} />
         </div>
       </div>
       <div className="flex-1 w-auto p-2 md:p-8 bg-white shadow-lg rounded-2xl overflow-hidden">

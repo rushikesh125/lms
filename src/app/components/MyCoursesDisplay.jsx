@@ -32,7 +32,7 @@ const MyCoursesDisplay = () => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-600">You are not enrolled in any courses yet.</p>
+        <p className="text-gray-600">You Have Not Created Any Courses Yet.</p>
       )}
     </div>
   );

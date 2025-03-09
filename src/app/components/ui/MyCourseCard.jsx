@@ -25,7 +25,7 @@ const MyCourseCard = ({ courseData }) => {
 
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transform transition duration-300 ease-in-out">
-      <Link href={`/my-courses/${courseId}`}> 
+      <Link href={`/course/${courseId}`}> 
         <img
           src={posterURL}
           alt={courseTitle}
@@ -33,14 +33,14 @@ const MyCourseCard = ({ courseData }) => {
         />
       </Link>
       <div className="p-4">
-        <Link href={`/my-courses/${courseId}`}>
+        <Link href={`/course/${courseId}`}>
           <h2 className="font-semibold text-gray-800 hover:text-purple-600 transition duration-200">
             {courseTitle}
           </h2>
         </Link>
         <p className="text-sm text-gray-600 mt-2">5 Students Enrolled</p>
         <div className="flex items-center justify-end mt-4 space-x-2">
-          <Link href={`/my-courses/${courseId}`}>
+          <Link href={`/course/${courseId}`}>
             <Button variant="ghost" size="sm">
               <Eye className="w-4 h-4 mr-1" />
               View
