@@ -3,8 +3,10 @@
 import { useCourse } from "@/firebase/courses/read";
 import { useParams } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronRight, ChevronDown, BookOpen } from "lucide-react";
+import { Menu, X, ChevronRight, ChevronDown, BookOpen, BrainCircuit } from "lucide-react";
 import MdChapterContent from "@/app/components/MdChapterContent";
+import { Button } from "@heroui/react";
+import PopupChatbot from "@/app/components/PopupChatbot";
 
 const EnrolledCourse = () => {
   const { course_id } = useParams();
@@ -40,6 +42,7 @@ const EnrolledCourse = () => {
   return (
     <>
       <main className="min-h-screen bg-gray-50">
+        <PopupChatbot/>
         {/* Header */}
         <div className="w-full p-4 bg-purple-600 text-white sticky top-0 z-40 flex justify-between items-center shadow-md">
           <h1 className="text-xl md:text-2xl font-semibold truncate">
@@ -110,7 +113,34 @@ const EnrolledCourse = () => {
                 </h2>
                 <div className="prose max-w-none">
                   {activeChapter.chapterContent ? (
+                    <>
                     <MdChapterContent chapterContent={activeChapter.chapterContent}/>
+                    <hr className="my-4"/>
+                    <div>
+            <label className="block text-sm font-semibold text-purple-500 mb-2">
+              🔮 Dynamiclly Adjust With Ai
+            </label>
+            <textarea
+              name="aiPrompt"
+              // value={aiPrompt}
+              // onChange={(e) => setAiPrompt(e.target.value)}
+              rows="3"
+              placeholder="Describe What Adjustments you want in current Chapter Ex: want described in more detail / add more examples "
+              className="w-full p-4 border border-purple-300 rounded-xl focus:ring-4 focus:ring-purple-200 focus:border-purple-500 transition-all duration-200 bg-purple-50/50 hover:bg-purple-50"
+            />
+            <Button
+              startContent={<BrainCircuit className="w-5 h-5" />}
+              color="secondary"
+              // isLoading={isLoading}
+              // isDisabled={isLoading}
+              variant="ghost"
+              // onPress={handleGenerateWithAi}
+              className="mt-3 bg-purple-100 text-purple-500 hover:bg-purple-200 font-semibold py-2 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105"
+            >
+              Renerate ✨
+            </Button>
+          </div>
+                    </>
                   ) : (
                     <div className="p-4 bg-gray-100 rounded-lg text-gray-600">
                       This chapter has no content yet.

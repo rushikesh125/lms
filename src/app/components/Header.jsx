@@ -12,7 +12,7 @@ import {
 } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { ArrowRight, Clapperboard, TvMinimalPlay } from "lucide-react";
+import { ArrowRight, Clapperboard, GitBranchPlus, TvMinimalPlay } from "lucide-react";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -90,6 +90,16 @@ const Header = () => {
             >
               <Clapperboard />
               My Courses
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link
+              aria-current="page"
+              href="/my-courses"
+              className="flex items-center justify-center gap-2 hover:text-purple-500"
+            >
+              <GitBranchPlus />
+              Forks
             </Link>
           </NavbarItem>
         </NavbarContent>
